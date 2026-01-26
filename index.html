@@ -1,152 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>General Labourer for Hire – Dublin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>Dog walking services in Kyiv s</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f0f0;
+    margin: 0;
+  }
 
-    <!-- Стили -->
-    <link rel="stylesheet" href="style.css">
+  .flip-card {
+    background: transparent;
+    width: 320px;
+    height: 180px;
+    perspective: 1000px;
+  }
 
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2c3e50">
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s;
+  }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f2f2f2;
-            color: #333;
-        }
+  /* ПК — переворот при hover */
+  @media (hover: hover) and (pointer: fine) {
+     .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+  }
 
-        .container {
-            max-width: 600px;
-            margin: 30px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }  
 
-        .photo {
-            text-align: center;
-        }
+  .flip-card-front {
+    background: #fff;
+    color: #000;
+  }
+   
+  .flip-card-back {
+    background: #222;
+    color: #fff;
+    transform: rotateY(180deg);
+    text-align: center;
+    
+  }
+   .flip-card-front *,
+   .flip-card-back * {
+      margin: 0;
+      padding: 0;
+      line-height: 1.85;
+  }
 
-        .photo img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #2c3e50;
-        }
+  a {
+    color: #00ccff;
+    text-decoration: none;
+  }
 
-        h1 {
-            text-align: center;
-            margin-top: 15px;
-            color: #2c3e50;
-        }
+  /* Мобильный переворот по классу */
+  .flip-card-inner.flipped {
+     transform: rotateY(180deg);
+  }
+   </style>
+  </head>
 
-        p {
-            text-align: center;
-            font-size: 16px;
-        }
+  <body>
 
-        ul {
-            padding-left: 20px;
-        }
+  <div class="flip-card">
+    <div class="flip-card-inner" id="flipCard">
+    
+      <!-- Передняя сторона -->
+      <div class="flip-card-front">
+         <h3>Галина</h3>
+        <p>Послуги вигулу собак</p>
+        <p>Печерський район.м.Київ</p>
+        <a class="btn phone" href="tel:+3530874893815">📞 Call: +380 99 656 3928</a>
+        
+      </div>
 
-        li {
-            margin-bottom: 8px;
-        }
+      <!-- Обратная сторона — твоя реклама -->
+      <div class="flip-card-back">
+        <h2>Website created by</h2>
+        <p>YourName — Web Developer</p>
+        <p>Custom landing pages & finishing</p>
+         <p><a href="https://andreyodr33-eng.github.io/tramp/" target="_blank">portfolio.com</a></p>
+         
+        
+      </div>
 
-        .btn {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-        }
-
-        .phone { background: #27ae60; }
-        .phone:hover { background: #219150; }
-
-        .whatsapp { background: #25D366; }
-        .facebook { background: #1877f2; }
-
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #777;
-        }
-
-        /* Скриншот мобильного */
-        .screenshot img {
-            width: 100%;
-            max-width: 640px;
-            border-radius: 10px;
-            display: block;
-            margin: 20px auto 0 auto;
-        }
-    </style>
-</head>
-
-<body>
-<div class="container">
-
-    <!-- Фото работника -->
-    <div class="photo">
-        <img src="photo.jpg" alt="General Labourer">
     </div>
+  </div>
+  <script>
+    const flipCard = document.getElementById('flipCard');
 
-    <h1>General Labourer for Hire</h1>
+// Проверка на тач-устройства
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    <p>
-        Reliable and hardworking labourer available in Dublin.<br>
-        Fast, honest and affordable work.
-    </p>
-
-    <h3>Services:</h3>
-    <ul>
-        <li>Loading & unloading</li>
-        <li>Painting (walls, fences)</li>
-        <li>Cleaning (houses, gardens, sites)</li>
-        <li>Small repairs</li>
-        <li>Help around the house</li>
-        <li>Other jobs on request</li>
-    </ul>
-
-    <!-- Контакты -->
-    <a class="btn phone" href="tel:+3530874893815">📞 Call: +353 087 489 3815</a>
-    <a class="btn whatsapp" href="https://wa.me/3530874893815">💬 WhatsApp</a>
-    <a class="btn facebook" href="https://facebook.com/yourprofile">📘 Facebook</a>
-
-    <!-- Скриншот мобильного -->
-    <div class="screenshot">
-        <img src="screenshot-mobile.png" alt="Mobile Preview">
-    </div>
-
-    <div class="footer">
-        Available 7 days a week • Dublin
-    </div>
-
-</div>
-
-<!-- Service Worker для PWA -->
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(reg => console.log('Service Worker registered!', reg))
-      .catch(err => console.log('Service Worker registration failed:', err));
+if (isTouchDevice) {
+  flipCard.addEventListener('click', () => {
+    flipCard.classList.toggle('flipped');
   });
 }
-</script>
+  </body>
+  </html>
 
-</body>
-</html>
      
