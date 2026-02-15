@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Monobank QR генератор</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 40px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 18px;
+      margin-top: 10px;
+      width: 250px;
+    }
+    #qrcode {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Генератор QR для Monobank</h2>
+
+<input type="number" id="amount" placeholder="Сума у гривнях">
+<br>
+<button onclick="generateQR()">Згенерувати QR</button>
+
+<div id="qrcode"></div>
+
+<script>
+function generateQR() {
+    const amount = document.getElementById("amount").value;
+    const card = "4441114407876992"; // Ваша карта Monobank
+
+    if (!amount || amount <= 0) {
+        alert("Введіть правильну суму!");
+        return;
+    }
+
+    // Deeplink для Monobank
+    const paymentLink = `monobank://send?amount=${amount}&card=${card}`;
+
+    // Очищаем старый QR
+    document.getElementById("qrcode").innerHTML = "";
+
+    // Генерируем QR
+    new QRCode(document.getElementById("qrcode"), {
+        text: paymentLink,
+        width: 256,
+        height: 256,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+}
+</script>
+
+</body>
+</html>
