@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Monobank QR Генератор</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin-top: 40px; }
-    input, button { padding: 10px; font-size: 18px; margin-top: 10px; width: 250px; }
-    #qrcode { margin-top: 20px; }
-  </style>
+<meta charset="UTF-8">
+<title>Monobank QR Генератор</title>
+<style>
+body { font-family: Arial; text-align: center; margin-top: 40px; }
+input, button { padding: 10px; font-size: 18px; margin-top: 10px; width: 250px; }
+#qrcode { margin-top: 20px; }
+</style>
 </head>
 <body>
 
@@ -19,7 +19,6 @@
 
 <div id="qrcode"></div>
 
-<!-- Подключаем библиотеку через CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
@@ -38,19 +37,27 @@ document.addEventListener("DOMContentLoaded", function() {
     const paymentLink = `monobank://send?amount=${amount}&card=${card}`;
 
     const qrDiv = document.getElementById("qrcode");
-    qrDiv.innerHTML = "";
 
-    new QRCode(qrDiv, {
-      text: paymentLink,
-      width: 256,
-      height: 256,
-      colorDark: "#000000",
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.H
-    });
+    // Очищаем старый QR безопасно
+    while(qrDiv.firstChild) {
+      qrDiv.removeChild(qrDiv.firstChild);
+    }
+
+    // Создаём QR с небольшой задержкой, чтобы Safari успел отрисовать
+    setTimeout(() => {
+      new QRCode(qrDiv, {
+        text: paymentLink,
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }, 50); // 50 мс
   });
 });
 </script>
 
 </body>
 </html>
+
