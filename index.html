@@ -40,7 +40,7 @@ input, button {
 function generateQR() {
     let amount = document.getElementById("amount").value;
     let iban = "UA093220010000026208340026552"; // ваш IBAN
-    let paymentLink = `https://www.privat24.ua/send?iban=${iban}&amount=${amount}`;
+    let paymentLink = `https://send.monobank.ua/jar/?iban=${iban}&amount=${amount}`;
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), paymentLink);
 }
@@ -48,5 +48,6 @@ function generateQR() {
 
 </body>
 </html>
+
 
 
