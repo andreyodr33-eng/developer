@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оплата карткою</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f5f5f5;
+}
+#container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+#cardNumber { font-size: 22px; margin-bottom: 20px; word-break: break-all; }
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+button:hover { background-color: #45a049; }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <div id="cardNumber"></div>
+    <button onclick="copyCard()">Скопіювати</button>
+</div>
+
+<script>
+    // Получаем номер карты/IBAN из параметра URL
+    const params = new URLSearchParams(window.location.search);
+    const cardNumber = params.get('data') || "Номер не найден";
+
+    // Показываем на странице
+    document.getElementById("cardNumber").innerText = cardNumber;
+
+    // Копировать в буфер
+    function copyCard() {
+        navigator.clipboard.writeText(cardNumber).then(() => {
+            alert("Номер скопійовано!");
+        });
+    }
+</script>
+
+</body>
+</html>
