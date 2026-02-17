@@ -67,46 +67,30 @@ button {
     }
 </script>
 <script>
-function speakCardNumber(text) {
+function speakInstruction() {
 
     speechSynthesis.cancel(); // очищаем очередь
 
-    // 1️⃣ Голосовая инструкция
     let instruction = new SpeechSynthesisUtterance(
-        "Зайдіть у свій банк та введіть скопійований номер"
+        "Зайдите в приложение банка и вставьте скопированный номер карты"
     );
-    instruction.lang = "uk-UA";
-    instruction.rate = 0.9;
 
-    // 2️⃣ После инструкции читаем цифры
-    instruction.onend = function () {
-
-        let digits = text.split("").join(" ");
-
-        let numbersSpeech = new SpeechSynthesisUtterance(digits);
-        numbersSpeech.lang = "uk-UA";
-        numbersSpeech.rate = 0.85;
-
-        speechSynthesis.speak(numbersSpeech);
-    };
+    instruction.lang = "ru-RU";   // русский язык
+    instruction.rate = 0.9;       // чуть медленнее
+    instruction.pitch = 1;        // стандартная высота голоса
 
     speechSynthesis.speak(instruction);
 }
 
-// Перехватываем кнопку
+// Запуск после нажатия кнопки
 document.querySelector("button").addEventListener("click", function () {
-
-    const number = document.getElementById("cardNumber").innerText;
-
-    if (number && number !== "Номер не найден") {
-        speakCardNumber(number);
-    }
-
+    speakInstruction();
 });
 </script>
 
 </body>
 
 </html>
+
 
 
