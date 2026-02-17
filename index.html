@@ -21,7 +21,11 @@ body {
     text-align: center;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
-#cardNumber { font-size: 22px; margin-bottom: 20px; word-break: break-all; }
+#cardNumber { 
+    font-size: 22px;
+    margin-bottom: 20px;
+    word-break: break-all;
+}
 button {
     padding: 12px 25px;
     font-size: 18px;
@@ -31,7 +35,13 @@ button {
     color: white;
     cursor: pointer;
 }
-button:hover { background-color: #45a049; }
+ button:hover {
+    background-color: #45a049;
+    transform: translateY(-3px) scale(1.05);
+     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+     background: linear-gradient(135deg, #ff758c, #ff7eb3);
+ }
+
 </style>
 </head>
 <body>
@@ -58,4 +68,5 @@ button:hover { background-color: #45a049; }
 </script>
 
 </body>
+
 </html>
