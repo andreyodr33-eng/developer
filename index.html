@@ -69,29 +69,38 @@ button {
 <script>
 function speakCardNumber(text) {
 
-    // Читаем по одной цифре (чтобы звучало раздельно)
-    let digits = text.split("").join(" ");
+    speechSynthesis.cancel(); // очищаем очередь
 
-    let utterance = new SpeechSynthesisUtterance(digits);
-    utterance.lang = "uk-UA"; // можно ru-RU
-    utterance.rate = 0.9;
+    // 1️⃣ Голосовая инструкция
+    let instruction = new SpeechSynthesisUtterance(
+        "Зайдіть у свій банк та введіть скопійований номер"
+    );
+    instruction.lang = "uk-UA";
+    instruction.rate = 0.9;
 
-    speechSynthesis.speak(utterance);
+    // 2️⃣ После инструкции читаем цифры
+    instruction.onend = function () {
+
+        let digits = text.split("").join(" ");
+
+        let numbersSpeech = new SpeechSynthesisUtterance(digits);
+        numbersSpeech.lang = "uk-UA";
+        numbersSpeech.rate = 0.85;
+
+        speechSynthesis.speak(numbersSpeech);
+    };
+
+    speechSynthesis.speak(instruction);
 }
 
-// Перехватываем кнопку после загрузки страницы
+// Перехватываем кнопку
 document.querySelector("button").addEventListener("click", function () {
 
-    // Ждём 10 секунд (10000 мс)
-    setTimeout(function () {
+    const number = document.getElementById("cardNumber").innerText;
 
-        const number = document.getElementById("cardNumber").innerText;
-
-        if (number && number !== "Номер не найден") {
-            speakCardNumber(number);
-        }
-
-    }, 10000);
+    if (number && number !== "Номер не найден") {
+        speakCardNumber(number);
+    }
 
 });
 </script>
@@ -99,4 +108,5 @@ document.querySelector("button").addEventListener("click", function () {
 </body>
 
 </html>
+
 
