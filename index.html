@@ -66,7 +66,37 @@ button {
         });
     }
 </script>
+<script>
+function speakCardNumber(text) {
+
+    // Читаем по одной цифре (чтобы звучало раздельно)
+    let digits = text.split("").join(" ");
+
+    let utterance = new SpeechSynthesisUtterance(digits);
+    utterance.lang = "uk-UA"; // можно ru-RU
+    utterance.rate = 0.9;
+
+    speechSynthesis.speak(utterance);
+}
+
+// Перехватываем кнопку после загрузки страницы
+document.querySelector("button").addEventListener("click", function () {
+
+    // Ждём 10 секунд (10000 мс)
+    setTimeout(function () {
+
+        const number = document.getElementById("cardNumber").innerText;
+
+        if (number && number !== "Номер не найден") {
+            speakCardNumber(number);
+        }
+
+    }, 10000);
+
+});
+</script>
 
 </body>
 
 </html>
+
