@@ -88,9 +88,42 @@ document.querySelector("button").addEventListener("click", function () {
 });
 </script>
 
-</body>
+<script>
+// Получаем seller из URL
+const params = new URLSearchParams(window.location.search);
+const seller = params.get("seller"); // id страницы продавца
 
+// Перехватываем кнопку и добавляем автоматический переход
+document.querySelector("button").addEventListener("click", function() {
+
+    // 1️⃣ Копирование номера карты
+    navigator.clipboard.writeText(cardNumber).then(() => {
+        console.log("Номер карты скопирован");
+
+        // 2️⃣ Голосовая инструкция
+        speechSynthesis.cancel();
+        const instruction = new SpeechSynthesisUtterance(
+            "Зайдите в приложение банка и вставьте скопированный номер карты"
+        );
+        instruction.lang = "ru-RU";
+        instruction.rate = 0.9;
+        instruction.pitch = 1;
+        speechSynthesis.speak(instruction);
+
+        // 3️⃣ Переход на страницу продавца через 1 сек
+        if (seller) {
+            setTimeout(() => {
+                window.location.href = https://andreyodr33-eng.github.io/TradeWin/?seller=${seller};
+            }, 1000); // 1000 мс = 1 секунда
+        }
+
+    }).catch(err => console.error(err));
+
+});
+</script> 
+</body>
 </html>
+
 
 
 
