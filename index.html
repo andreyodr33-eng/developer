@@ -52,76 +52,89 @@ button {
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const cardNumber = params.get('data') || "Номер не найден";
-const sellerPage = params.get('seller');
 
-document.getElementById("cardNumber").innerText = cardNumber;
+document.addEventListener("DOMContentLoaded", function() {
 
-// Копирование
-function copyCard() {
-    navigator.clipboard.writeText(cardNumber);
-}
+    // Получаем параметры из URL
+    const params = new URLSearchParams(window.location.search);
+    const cardNumber = params.get('data') || "Номер не найден";
+    const sellerPage = params.get('seller');
 
-// Голос
-function speakInstruction() {
-    speechSynthesis.cancel();
-    let instruction = new SpeechSynthesisUtterance(
-        "Зайдите в приложение банка и вставьте скопированный номер карты"
-    );
-    instruction.lang = "ru-RU";
-    instruction.rate = 0.9;
-    speechSynthesis.speak(instruction);
-}
+    // Показываем номер карты
+    document.getElementById("cardNumber").innerText = cardNumber;
 
-// Показ информации продавца
-function showSellerInfo() {
+    // Создаём блок для информации продавца (сверху)
+    const container = document.getElementById("container");
+    const sellerInfoBlock = document.createElement("div");
+    sellerInfoBlock.id = "sellerInfoBlock";
+    sellerInfoBlock.style.marginBottom = "20px";
+    sellerInfoBlock.style.padding = "15px";
+    sellerInfoBlock.style.background = "#fff8dc";
+    sellerInfoBlock.style.borderRadius = "10px";
+    sellerInfoBlock.style.fontWeight = "bold";
+    container.insertBefore(sellerInfoBlock, container.firstChild);
 
-    if (!sellerPage) return;
+    // Функция копирования номера карты
+    function copyCard() {
+        navigator.clipboard.writeText(cardNumber).catch(err => console.error(err));
+    }
 
-    fetch("https://andreyodr33-eng.github.io/TradeWin/?page=" + sellerPage)
-    .then(response => response.text())
-    .then(html => {
+    // Функция озвучки инструкции
+    function speakInstruction() {
+        speechSynthesis.cancel();
+        const instruction = new SpeechSynthesisUtterance(
+            "Зайдите в приложение банка и вставьте скопированный номер карты"
+        );
+        instruction.lang = "ru-RU";
+        instruction.rate = 0.9;
+        speechSynthesis.speak(instruction);
+    }
 
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-
-        const sellerCard = doc.getElementById("card");
-
-        if (sellerCard) {
-
-            // Проверяем чтобы блок не дублировался
-            if (!document.getElementById("sellerInfoBlock")) {
-
-                const infoBlock = document.createElement("div");
-                infoBlock.id = "sellerInfoBlock";
-                infoBlock.style.marginBottom = "20px";
-                infoBlock.style.padding = "15px";
-                infoBlock.style.background = "#fff8dc";
-                infoBlock.style.borderRadius = "10px";
-                infoBlock.innerHTML = sellerCard.innerHTML;
-
-                const container = document.getElementById("container");
-                container.insertBefore(infoBlock, container.firstChild);
-            }
+    // Функция показа информации продавца
+    function showSellerInfo() {
+        if (!sellerPage) {
+            sellerInfoBlock.innerText = "Информация о продавце не найдена";
+            return;
         }
 
-    })
-    .catch(err => console.log("Ошибка загрузки продавца:", err));
-}
+        fetch(`https://andreyodr33-eng.github.io/TradeWin/?page=${sellerPage}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
 
-// Обработчик кнопки
-document.querySelector("button").addEventListener("click", function() {
-    copyCard();
-    speakInstruction();
-    showSellerInfo();
+                // На сайте TradeWin блок с информацией продавца должен иметь id="seller-data"
+                const sellerData = doc.getElementById("seller-data");
+
+                if (sellerData) {
+                    sellerInfoBlock.innerHTML = sellerData.innerHTML;
+                } else {
+                    sellerInfoBlock.innerText = "Информация о продавце не найдена";
+                }
+            })
+            .catch(err => {
+                console.error("Ошибка загрузки продавца:", err);
+                sellerInfoBlock.innerText = "Ошибка загрузки информации";
+            });
+    }
+
+    // Обработчик кнопки
+    const copyButton = document.querySelector("button");
+    copyButton.addEventListener("click", function() {
+        copyCard();
+        speakInstruction();
+        showSellerInfo();
+    });
+
 });
 </script>
+
 </body>
 </html>
 
 
     
+
 
 
 
