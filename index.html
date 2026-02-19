@@ -52,65 +52,77 @@ button {
 </div>
 
 <script>
-    // Получаем номер карты и seller (номер страницы) из URL
-    const params = new URLSearchParams(window.location.search);
-    const cardNumber = params.get('data') || "Номер не найден";
-    const sellerPage = params.get('seller'); // номер страницы на TradeWin
+const params = new URLSearchParams(window.location.search);
+const cardNumber = params.get('data') || "Номер не найден";
+const sellerPage = params.get('seller');
 
-    // Показываем на странице
-    document.getElementById("cardNumber").innerText = cardNumber;
+document.getElementById("cardNumber").innerText = cardNumber;
 
-    // Функция копирования номера
-    function copyCard() {
-        navigator.clipboard.writeText(cardNumber).then(() => {
-            // Можно здесь добавить console.log("Номер скопирован")
-        });
-    }
+// Копирование
+function copyCard() {
+    navigator.clipboard.writeText(cardNumber);
+}
 
-    // Функция голосовой инструкции
-    function speakInstruction() {
-        speechSynthesis.cancel(); // очищаем очередь
-        let instruction = new SpeechSynthesisUtterance(
-            "Зайдите в приложение банка и вставьте скопированный номер карты"
-        );
-        instruction.lang = "ru-RU";   // русский язык
-        instruction.rate = 0.9;
-        instruction.pitch = 1;
-        speechSynthesis.speak(instruction);
-    }
+// Голос
+function speakInstruction() {
+    speechSynthesis.cancel();
+    let instruction = new SpeechSynthesisUtterance(
+        "Зайдите в приложение банка и вставьте скопированный номер карты"
+    );
+    instruction.lang = "ru-RU";
+    instruction.rate = 0.9;
+    speechSynthesis.speak(instruction);
+}
 
-    // Обработчик кнопки
-    const button = document.getElementById("copyBtn");
-    button.addEventListener("click", function() {
-        copyCard();
-        speakInstruction();
+// Показ информации продавца
+function showSellerInfo() {
 
-        // Добавляем ссылку на страницу продавца на TradeWin
-        if (sellerPage) {
-            const linkId = "sellerLink";
+    if (!sellerPage) return;
 
-            // Проверяем, чтобы ссылка не дублировалась
-            if (!document.getElementById(linkId)) {
-                const link = document.createElement("a");
-                link.id = linkId;
-                link.href = "https://andreyodr33-eng.github.io/TradeWin/?page=" + sellerPage;
-                link.textContent = "Посмотреть информацию о продавце";
-                link.style.display = "block";
-                link.style.marginTop = "20px";
-                link.style.fontSize = "18px";
-                link.style.color = "blue";
-                link.target = "_blank"; // открывать в новой вкладке
-                document.getElementById("container").appendChild(link);
+    fetch("https://andreyodr33-eng.github.io/TradeWin/?page=" + sellerPage)
+    .then(response => response.text())
+    .then(html => {
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        const sellerCard = doc.getElementById("card");
+
+        if (sellerCard) {
+
+            // Проверяем чтобы блок не дублировался
+            if (!document.getElementById("sellerInfoBlock")) {
+
+                const infoBlock = document.createElement("div");
+                infoBlock.id = "sellerInfoBlock";
+                infoBlock.style.marginBottom = "20px";
+                infoBlock.style.padding = "15px";
+                infoBlock.style.background = "#fff8dc";
+                infoBlock.style.borderRadius = "10px";
+                infoBlock.innerHTML = sellerCard.innerHTML;
+
+                const container = document.getElementById("container");
+                container.insertBefore(infoBlock, container.firstChild);
             }
         }
-    });
-</script>
 
+    })
+    .catch(err => console.log("Ошибка загрузки продавца:", err));
+}
+
+// Обработчик кнопки
+document.querySelector("button").addEventListener("click", function() {
+    copyCard();
+    speakInstruction();
+    showSellerInfo();
+});
+</script>
 </body>
 </html>
 
 
     
+
 
 
 
