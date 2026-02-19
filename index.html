@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Оплата карткою</title>
+<title>Сканер QR</title>
 <style>
 body {
     margin: 0;
@@ -20,6 +20,7 @@ body {
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    min-width: 300px;
 }
 #cardNumber { 
     font-size: 22px;
@@ -35,27 +36,33 @@ button {
     color: white;
     cursor: pointer;
 }
- button:hover {
+button:hover {
     background-color: #45a049;
     transform: translateY(-3px) scale(1.05);
-     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-     background: linear-gradient(135deg, #ff758c, #ff7eb3);
- }
-
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+}
+#sellerInfoBlock {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff8dc;
+    border-radius: 10px;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
 
 <div id="container">
+    <div id="sellerInfoBlock"></div>
     <div id="cardNumber"></div>
-    <button id="copyBtn">Скопіювати</button>
+    <button>Скопіювати</button>
 </div>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function() {
 
-    // Получаем параметры из URL
+    // Получаем данные из URL
     const params = new URLSearchParams(window.location.search);
     const cardNumber = params.get('data') || "Номер не найден";
     const sellerPage = params.get('seller');
@@ -63,23 +70,21 @@ document.addEventListener("DOMContentLoaded", function() {
     // Показываем номер карты
     document.getElementById("cardNumber").innerText = cardNumber;
 
-    // Создаём блок для информации продавца (сверху)
-    const container = document.getElementById("container");
-    const sellerInfoBlock = document.createElement("div");
-    sellerInfoBlock.id = "sellerInfoBlock";
-    sellerInfoBlock.style.marginBottom = "20px";
-    sellerInfoBlock.style.padding = "15px";
-    sellerInfoBlock.style.background = "#fff8dc";
-    sellerInfoBlock.style.borderRadius = "10px";
-    sellerInfoBlock.style.fontWeight = "bold";
-    container.insertBefore(sellerInfoBlock, container.firstChild);
+    // Список продавцов
+    const sellers = {
+        "1": "Владимирский рынок — место 1",
+        "2": "Владимирский рынок — место 2",
+        "3": "Житний рынок — место 3"
+    };
 
-    // Функция копирования номера карты
+    const sellerInfoBlock = document.getElementById("sellerInfoBlock");
+
+    // Копирование номера карты
     function copyCard() {
         navigator.clipboard.writeText(cardNumber).catch(err => console.error(err));
     }
 
-    // Функция озвучки инструкции
+    // Голосовая инструкция
     function speakInstruction() {
         speechSynthesis.cancel();
         const instruction = new SpeechSynthesisUtterance(
@@ -90,32 +95,13 @@ document.addEventListener("DOMContentLoaded", function() {
         speechSynthesis.speak(instruction);
     }
 
-    // Функция показа информации продавца
+    // Показ информации продавца
     function showSellerInfo() {
-        if (!sellerPage) {
+        if (sellerPage && sellers[sellerPage]) {
+            sellerInfoBlock.innerText = sellers[sellerPage];
+        } else {
             sellerInfoBlock.innerText = "Информация о продавце не найдена";
-            return;
         }
-
-        fetch(`https://andreyodr33-eng.github.io/TradeWin/?page=${sellerPage}`)
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, "text/html");
-
-                // На сайте TradeWin блок с информацией продавца должен иметь id="seller-data"
-                const sellerData = doc.getElementById("seller-data");
-
-                if (sellerData) {
-                    sellerInfoBlock.innerHTML = sellerData.innerHTML;
-                } else {
-                    sellerInfoBlock.innerText = "Информация о продавце не найдена";
-                }
-            })
-            .catch(err => {
-                console.error("Ошибка загрузки продавца:", err);
-                sellerInfoBlock.innerText = "Ошибка загрузки информации";
-            });
     }
 
     // Обработчик кнопки
@@ -134,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     
+
 
 
 
