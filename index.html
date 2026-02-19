@@ -48,48 +48,72 @@ button {
 
 <div id="container">
     <div id="cardNumber"></div>
-    <button onclick="copyCard()">Скопіювати</button>
+    <button id="copyBtn">Скопіювати</button>
 </div>
 
 <script>
-    // Получаем номер карты/IBAN из параметра URL
+    // Получаем номер карты и seller (номер страницы) из URL
     const params = new URLSearchParams(window.location.search);
     const cardNumber = params.get('data') || "Номер не найден";
+    const sellerPage = params.get('seller'); // номер страницы на TradeWin
 
     // Показываем на странице
     document.getElementById("cardNumber").innerText = cardNumber;
 
-    // Копировать в буфер
+    // Функция копирования номера
     function copyCard() {
         navigator.clipboard.writeText(cardNumber).then(() => {
-            
+            // Можно здесь добавить console.log("Номер скопирован")
         });
     }
+
+    // Функция голосовой инструкции
+    function speakInstruction() {
+        speechSynthesis.cancel(); // очищаем очередь
+        let instruction = new SpeechSynthesisUtterance(
+            "Зайдите в приложение банка и вставьте скопированный номер карты"
+        );
+        instruction.lang = "ru-RU";   // русский язык
+        instruction.rate = 0.9;
+        instruction.pitch = 1;
+        speechSynthesis.speak(instruction);
+    }
+
+    // Обработчик кнопки
+    const button = document.getElementById("copyBtn");
+    button.addEventListener("click", function() {
+        copyCard();
+        speakInstruction();
+
+        // Добавляем ссылку на страницу продавца на TradeWin
+        if (sellerPage) {
+            const linkId = "sellerLink";
+
+            // Проверяем, чтобы ссылка не дублировалась
+            if (!document.getElementById(linkId)) {
+                const link = document.createElement("a");
+                link.id = linkId;
+                link.href = "https://andreyodr33-eng.github.io/TradeWin/?page=" + sellerPage;
+                link.textContent = "Посмотреть информацию о продавце";
+                link.style.display = "block";
+                link.style.marginTop = "20px";
+                link.style.fontSize = "18px";
+                link.style.color = "blue";
+                link.target = "_blank"; // открывать в новой вкладке
+                document.getElementById("container").appendChild(link);
+            }
+        }
+    });
 </script>
-<script>
-function speakInstruction() {
 
-    speechSynthesis.cancel(); // очищаем очередь
-
-    let instruction = new SpeechSynthesisUtterance(
-        "Зайдите в приложение банка и вставьте скопированный номер карты"
-    );
-
-    instruction.lang = "ru-RU";   // русский язык
-    instruction.rate = 0.9;       // чуть медленнее
-    instruction.pitch = 1;        // стандартная высота голоса
-
-    speechSynthesis.speak(instruction);
-}
-
-// Запуск после нажатия кнопки
-document.querySelector("button").addEventListener("click", function () {
-    speakInstruction();
-});
-</script>
- 
 </body>
 </html>
+
+
+    
+
+
+
 
 
 
