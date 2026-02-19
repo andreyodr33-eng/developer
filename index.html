@@ -48,6 +48,9 @@ button:hover {
     background: #fff8dc;
     border-radius: 10px;
     font-weight: bold;
+    text-align: left;
+    line-height: 1.5;
+    transition: all 0.3s ease;
 }
 </style>
 </head>
@@ -67,15 +70,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const cardNumber = params.get('data') || "Номер не найден";
     const sellerPage = params.get('seller');
 
-    // Показываем номер карты
     document.getElementById("cardNumber").innerText = cardNumber;
 
-    // Список продавцов
+    // Список продавцов с телефоном и скидками
     const sellers = {
-        "1": "Владимирский рынок — место 1",
-        "2": "Владимирский рынок — место 2",
-        "3": "Житний рынок — место 3",
-        "4": "Pынок Светлый - палатка N7"
+        "1": {
+            market: "Владимирский рынок",
+            place: "место 1",
+            phone: "+380501112233",
+            discount: "Скидка 5% на следующий заказ"
+        },
+        "2": {
+            market: "Владимирский рынок",
+            place: "место 2",
+            phone: "+380501122334",
+            discount: "Скидка 10% на следующий заказ"
+        },
+        "3": {
+            market: "Житний рынок",
+            place: "место 3",
+            phone: "+380501133445",
+            discount: "Скидка 7% на свежие овощи"
+        }
     };
 
     const sellerInfoBlock = document.getElementById("sellerInfoBlock");
@@ -99,7 +115,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Показ информации продавца
     function showSellerInfo() {
         if (sellerPage && sellers[sellerPage]) {
-            sellerInfoBlock.innerText = sellers[sellerPage];
+            const s = sellers[sellerPage];
+            sellerInfoBlock.innerHTML = `
+                <div><strong>${s.market} — ${s.place}</strong></div>
+                <div>Телефон: ${s.phone}</div>
+                <div>${s.discount}</div>
+            `;
         } else {
             sellerInfoBlock.innerText = "Информация о продавце не найдена";
         }
@@ -121,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     
+
 
 
 
