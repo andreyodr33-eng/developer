@@ -12,45 +12,51 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #f5f5f5;
+    background: #000;
+    color: #fff
 }
 #container {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
+    background: #111;
+    padding: 25px;
+    border: 2px solid #00ff99;
+    border-radius: 15px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-sizing: border-box
     min-width: 300px;
 }
 #cardNumber { 
     font-size: 22px;
     margin-bottom: 20px;
     word-break: break-all;
+    color: #fff;
 }
 button {
     padding: 12px 25px;
     font-size: 18px;
     border-radius: 8px;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
+    border: 2px solid #00ff99;
+    background-color: #000;
+    color: #00ff99;
     cursor: pointer;
+    transition: 0,2s;
 }
 button:hover {
-    background-color: #45a049;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    background-color: #00ff99;
+    color: #000;
+    
+    
 }
 #sellerInfoBlock {
     margin-bottom: 20px;
     padding: 15px;
-    background: #fff8dc;
+    background: #111;
+    border: 2px solid #00ff99;
     border-radius: 10px;
-    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
     text-align: left;
     line-height: 1.5;
-    transition: all 0.3s ease;
+    display: none;
 }
 </style>
 </head>
@@ -76,15 +82,15 @@ document.addEventListener("DOMContentLoaded", function() {
     const sellers = {
         "1": {
             market: "Владимирский рынок",
-            place: "место 1",
-            phone: "+380501112233",
-            discount: "Скидка 5% на следующий заказ"
+            place: "место 17",
+            phone: 
+            discount: "Скидки постоянным покупателям"
         },
         "2": {
             market: "Владимирский рынок",
-            place: "место 2",
-            phone: "+380501122334",
-            discount: "Скидка 10% на следующий заказ"
+            place: "Овощи домашние, соленья",
+            phone: "0000000000",
+            discount: "Скидки постоянным клиентам"
         },
         "3": {
             market: "Житний рынок",
@@ -121,14 +127,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div>Телефон: ${s.phone}</div>
                 <div>${s.discount}</div>
             `;
+            sellerInfoBlock.style.display = "block";
         } else {
             sellerInfoBlock.innerText = "Информация о продавце не найдена";
+            sellerInfoBlock.style.display = "block";
         }
     }
 
     // Обработчик кнопки
-    const copyButton = document.querySelector("button");
-    copyButton.addEventListener("click", function() {
+    document.querySelector("button").addEventListener("click", function() {
         copyCard();
         speakInstruction();
         showSellerInfo();
@@ -142,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     
+
 
 
 
