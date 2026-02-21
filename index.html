@@ -58,14 +58,31 @@ button:hover {
     line-height: 1.5;
     display: none;
 }
+ #instructionText {
+     margin-top:12px;
+     padding:12px;
+     background:#000;
+     border:2px solid #00c853;
+     border-radius:8px;
+     color:#fff;
+     display:none;
+     font-weight:500;
+ }
+ 
 </style>
 </head>
+
 <body>
 
 <div id="container">
     <div id="sellerInfoBlock"></div>
     <div id="cardNumber"></div>
     <button>Скопіювати</button>
+
+    <!-- Блок текстовой инструкции -->
+    <div id="instructionText"> 
+         
+ </div>
 </div>
 
 <script>
@@ -78,9 +95,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById("cardNumber").innerText = cardNumber;
 
-    // Список продавцов с телефоном и скидками
+    // Список продавцов
     const sellers = {
-        "1": {
+         "1": {
             market: "Володимирський ринок",
             place: "место 17",
             phone: "",
@@ -107,12 +124,18 @@ document.addEventListener("DOMContentLoaded", function() {
         navigator.clipboard.writeText(cardNumber).catch(err => console.error(err));
     }
 
-    // Голосовая инструкция
+    // Голосовая + текстовая инструкция
     function speakInstruction() {
+        const text = "Зайдите в приложение банка и вставьте скопированный номер карты";
+
+        // Показываем текст
+        const instructionBlock = document.getElementById("instructionText");
+        instructionBlock.innerText = text;
+        instructionBlock.style.display = "block";
+
+        // Озвучка
         speechSynthesis.cancel();
-        const instruction = new SpeechSynthesisUtterance(
-            "Зайдите в приложение банка и вставьте скопированный номер карты"
-        );
+        const instruction = new SpeechSynthesisUtterance(text);
         instruction.lang = "ru-RU";
         instruction.rate = 0.9;
         speechSynthesis.speak(instruction);
@@ -146,9 +169,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
+        
 
 
     
+
 
 
 
