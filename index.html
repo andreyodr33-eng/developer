@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Голосовая + текстовая инструкция
     function speakInstruction() {
-        const text = "Відкрийте додаток банку та вставте скопійований номер картки";
+        const text = "Откройте приложение вашего банка и вставьте скопированный номер карты";
 
         // Показываем текст
         const instructionBlock = document.getElementById("instructionText");
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Озвучка
         speechSynthesis.cancel();
         const instruction = new SpeechSynthesisUtterance(text);
-        instruction.lang = "uk-UA";
+        instruction.lang = "ru-RU";
         instruction.rate = 0.9;
         speechSynthesis.speak(instruction);
     }
@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     
+
 
 
 
